@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <conio.h> // Include this header for getch() on Windows
+#include <conio.h>
 
 #define MAX_EXPENSES 100
 #define MAX_DESCRIPTION_LENGTH 100
 #define FILENAME "expenses.csv"
 
-// Structure to represent an expense
 typedef struct
 {
     char date[20];
@@ -16,11 +15,9 @@ typedef struct
     float amount;
 } Expense;
 
-// Global array to store expense records
 Expense expenses[MAX_EXPENSES];
 int numExpenses = 0;
 
-// Function to load expenses from the CSV file
 void loadExpenses()
 {
     FILE *file = fopen(FILENAME, "r");
@@ -39,7 +36,6 @@ void loadExpenses()
     fclose(file);
 }
 
-// Function to save expenses to the CSV file
 void saveExpenses()
 {
     FILE *file = fopen(FILENAME, "w");
@@ -57,7 +53,6 @@ void saveExpenses()
     fclose(file);
 }
 
-// Function to clear the screen based on the operating system
 void clearScreen()
 {
 #ifdef _WIN32
@@ -67,14 +62,12 @@ void clearScreen()
 #endif
 }
 
-// Function to print the green header
 void printHeader(const char *header)
 {
-    printf("\033[0;32m%s\033[0m\n", header); // Set text to green
-    printf("\n"); // Print a newline for gap
+    printf("\033[0;32m%s\033[0m\n", header); 
+    printf("\n");
 }
 
-// Function to add a new expense
 void addExpense()
 {
     clearScreen();
@@ -87,15 +80,15 @@ void addExpense()
 
     printf("Enter date (DD/MM/YYYY): ");
     scanf("%s", expenses[numExpenses].date);
-    getchar(); // Consume newline character left by scanf
+    getchar(); 
 
     printf("Enter category: ");
     fgets(expenses[numExpenses].category, sizeof(expenses[numExpenses].category), stdin);
-    strtok(expenses[numExpenses].category, "\n"); // Remove newline character
+    strtok(expenses[numExpenses].category, "\n"); 
 
     printf("Enter description: ");
     fgets(expenses[numExpenses].description, sizeof(expenses[numExpenses].description), stdin);
-    strtok(expenses[numExpenses].description, "\n"); // Remove newline character
+    strtok(expenses[numExpenses].description, "\n"); 
 
     printf("Enter amount: ");
     scanf("%f", &expenses[numExpenses].amount);
@@ -106,7 +99,6 @@ void addExpense()
     printf("Expense added successfully.\n");
 }
 
-// Function to view all expenses
 void viewExpenses()
 {
     clearScreen();
@@ -131,7 +123,6 @@ void viewExpenses()
     printf("Total Amount: $%.2f\n", totalAmount);
 }
 
-// Function to delete an expense
 void deleteExpense()
 {
     while (1)
@@ -150,7 +141,7 @@ void deleteExpense()
         char input[10];
         printf("Enter the index of the expense to delete (1 to %d) or 'x' to go back to main menu: ", numExpenses);
         fgets(input, sizeof(input), stdin);
-        strtok(input, "\n"); // Remove newline character
+        strtok(input, "\n"); 
 
         if (input[0] == 'x' || input[0] == 'X')
         {
@@ -177,7 +168,6 @@ void deleteExpense()
     }
 }
 
-// Function to edit an expense
 void editExpense()
 {
     while (1)
@@ -196,7 +186,7 @@ void editExpense()
         char input[10];
         printf("Enter the index of the expense to edit (1 to %d) or 'x' to go back to main menu: ", numExpenses);
         fgets(input, sizeof(input), stdin);
-        strtok(input, "\n"); // Remove newline character
+        strtok(input, "\n");
 
         if (input[0] == 'x' || input[0] == 'X')
         {
@@ -207,7 +197,7 @@ void editExpense()
         index = atoi(input);
         if (index >= 1 && index <= numExpenses)
         {
-            index--; // Convert to zero-based index
+            index--;
             int editChoice;
             do
             {
@@ -220,7 +210,7 @@ void editExpense()
                 printf("4. Edit Amount (current: %.2f)\n", expenses[index].amount);
                 printf("5. Return to Main Menu\n");
                 printf("Enter your choice: ");
-                editChoice = getch() - '0'; // Capture single key press and convert to integer
+                editChoice = getch() - '0';
 
                 clearScreen();
                 printHeader("Edit Expense");
@@ -230,17 +220,17 @@ void editExpense()
                 case 1:
                     printf("Enter new date (DD/MM/YYYY): ");
                     scanf("%s", expenses[index].date);
-                    getchar(); // Consume newline character left by scanf
+                    getchar(); 
                     break;
                 case 2:
                     printf("Enter new category: ");
                     fgets(expenses[index].category, sizeof(expenses[index].category), stdin);
-                    strtok(expenses[index].category, "\n"); // Remove newline character
+                    strtok(expenses[index].category, "\n"); 
                     break;
                 case 3:
                     printf("Enter new description: ");
                     fgets(expenses[index].description, sizeof(expenses[index].description), stdin);
-                    strtok(expenses[index].description, "\n"); // Remove newline character
+                    strtok(expenses[index].description, "\n");
                     break;
                 case 4:
                     printf("Enter new amount: ");
@@ -282,9 +272,9 @@ int main()
         printf("4. Delete Expense\n");
         printf("5. Exit\n");
         printf("Enter your choice: ");
-        choice = getch() - '0'; // Capture single key press and convert to integer
+        choice = getch() - '0'; 
 
-        clearScreen(); // Clear the screen before executing the selected option
+        clearScreen();
 
         switch (choice)
         {
@@ -308,7 +298,7 @@ int main()
             break;
         }
         printf("\nPress any key to continue...");
-        getch(); // Wait for user input before returning to the menu
+        getch(); 
     }
     while (choice != 5);
 
